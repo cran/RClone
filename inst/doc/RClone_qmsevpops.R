@@ -164,12 +164,10 @@ boxplot(resvigncont2$res2_SU1$Arcouest$raw_MLG, main = "Genotype accumulation cu
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  pgen(zostera, vecpop = popvec)
-#  data(factoR) #for psex
 #  psex(zostera, vecpop = popvec)
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  pgen(haplodata, haploid = TRUE, vecpop = haplovec)
-#  data(factoR) #for psex
 #  psex(haplodata, haploid = TRUE, vecpop = haplovec)
 
 ## ---- eval = FALSE-------------------------------------------------------
@@ -186,13 +184,11 @@ boxplot(resvigncont2$res2_SU1$Arcouest$raw_MLG, main = "Genotype accumulation cu
 #  										#with p-values and a progression bar
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  data(factoR)
 #  res <- psex(zostera, vecpop = popvec, RR = TRUE, nbrepeat = 1000)
 #  res$Arcouest[[1]]
 #  #if nbrepeat != 0, res contains a table of psex values and a vector of sim-psex values
 
 ## ---- echo = FALSE-------------------------------------------------------
-data(factoR)
 knitr::kable(resvigncont2$res2_PS2, align = "c")
 
 ## ---- eval = FALSE-------------------------------------------------------
@@ -234,7 +230,6 @@ knitr::kable(Fis(zostera, vecpop = popvec, RR = TRUE)$Arcouest[[2]], align = "c"
 #  											#with p-values and a progression bar
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  data(factoR)
 #  res <- psex_Fis(zostera, vecpop = popvec, RR = TRUE, nbrepeat = 1000)
 #  res$Arcouest[[1]]
 #  #if nbrepeat != 0, res contains a table of psex values and a vector of sim-psex Fis values
@@ -360,7 +355,7 @@ MLLlist <- MLL_generator2(list(res[[1]]$potential_clones,
 #  clonal_index(zostera, vecpop = popvec)
 
 ## ---- echo = FALSE, results = 'asis'-------------------------------------
-knitr::kable(clonal_index(zostera, vecpop = popvec), align = "c")
+knitr::kable(resvigncont2$res2_ci, align = "c")
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  Pareto_index(zostera, vecpop = popvec)
@@ -593,24 +588,24 @@ knitr::kable(resvigncont2$res2_ee$SaintMalo$results, align = "c")
 #res$SaintMalo$simulation #vector of sim aggregation index
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  genclone(zostera, coords = coord_zostera, vecpop = popvec)
+#  GenClone(zostera, coords = coord_zostera, vecpop = popvec)
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  genclone(popsim, coords = coord_sim, listMLL = MLLlist)
+#  GenClone(popsim, coords = coord_sim, listMLL = MLLlist)
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  genclone(haplodata, haploid = TRUE, coords = coord_haplo)
+#  GenClone(haplodata, haploid = TRUE, coords = coord_haplo)
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  genclone(zostera, coords = coord_zostera, vecpop = popvec, nbrepeat = 100) #pvalues
-#  genclone(zostera, coords = coord_zostera, vecpop = popvec, nbrepeat = 1000, bar = TRUE)
+#  GenClone(zostera, coords = coord_zostera, vecpop = popvec, nbrepeat = 100) #pvalues
+#  GenClone(zostera, coords = coord_zostera, vecpop = popvec, nbrepeat = 1000, bar = TRUE)
 #  																#could be time consuming
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  genclone(zostera, coords = coord_zostera, vecpop = popvec)
+#  GenClone(zostera, coords = coord_zostera, vecpop = popvec)
 
 ## ---- echo = FALSE, results = 'asis'-------------------------------------
-knitr::kable(resvigncont2$res2_gen[,1:10], longtable = TRUE, align = "c")
-knitr::kable(resvigncont2$res2_gen[,11:17], longtable = TRUE, align = "c")
-knitr::kable(resvigncont2$res2_gen[,18:24], longtable = TRUE, align = "c")
+knitr::kable(resvigncont2$res2_gen[,1:9], longtable = TRUE, align = "c")
+knitr::kable(resvigncont2$res2_gen[,10:16], longtable = TRUE, align = "c")
+knitr::kable(resvigncont2$res2_gen[,17:24], longtable = TRUE, align = "c")
 

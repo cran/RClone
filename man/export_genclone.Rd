@@ -4,7 +4,7 @@
 \alias{export_genclone_arlequin}
 
 \title{
-export data file to Adegent, Genetix and Arlequin
+export data file to Adegenet, Genetix and Arlequin
 }
 
 \description{
@@ -39,16 +39,15 @@ a \command{genind} object or a file for Genetix or Arlequin.
 }
 
 \author{
-The R implementation of \command{RClone} was written by Diane Bailleul working for Sophie Arnaud-Haond at IFREMER.
+Creator/Author: Diane Bailleul <diane.bailleul.pro@gmail.com> \cr
+Author: Sophie Arnaud-Haond <sophie.arnaud@ifremer.fr> \cr
+Contributor: Solenn Stoeckel
+
+
+The R implementation of \command{RClone} was written by Diane Bailleul.
 
 
 The design was inspired by GenClone program described in Arnaud-Haond & Belkhir (2007).
-
-
-Maintainer: Diane Bailleul <diane.bailleul@gmail.com>
-
-
-Author: Sophie Arnaud-Haond <sohie.arnaud@ifremer.fr>
 }
 
 \note{
@@ -64,7 +63,7 @@ data(posidonia)
 res <- export_genclone_genind(posidonia, "/")
 #library(adegenet)
 #res2 <- df2genind(res, ploidy = 2, sep = "/")
-#res2$loc.nall
+#nAll(res2)
 
 #RClone to Genetix:
 export_genclone_genetix(posidonia, name = "test.txt")

@@ -1,6 +1,6 @@
 ---
-title: "RClone quickmanual several populations"
-author: "Diane Bailleul"
+title: "RClone quickmanual: several populations"
+author: "Diane Bailleul, Solenn Stoeckel and Sophie Arnaud-Haond"
 date: "`r Sys.Date()`"
 output: rmarkdown::pdf_document
 pdf_document:
@@ -32,7 +32,8 @@ knitr::opts_chunk$set(collapse = TRUE, comment = ">", dev = 'pdf')
 &nbsp;
 
 
-*RClone* is a R package version of *GenClone* program: to analyse data (SSR, SNP, ...), test for clonality and describe spatial clonal organisation.
+*RClone* is a R package version of *GenClone* program (Arnaud-Haond & Belkhir 2007): to analyse data (SSR, SNP, ...), test for clonality and describe spatial clonal organisation.  
+Major improvements are multi-populations handling and definition of MLLs (Multilocus Lineages, i.e. slightly distinct Multi Locus Genotypes) through simulations.
 
 
 &nbsp;
@@ -55,10 +56,10 @@ knitr::opts_chunk$set(collapse = TRUE, comment = ">", dev = 'pdf')
 4. Spatial organisation of MLG/MLL  
 * spatial autocorrelation methods;  
 * clonal subrange estimation;  
-* Aggregation index and Edge Effect estimation.  
+* Aggregation and Edge Effect indices estimation.  
 
 
-Some of these analysis can be applied to dataset without clones. 
+Some of these analysis can be applied to dataset with no repeated MLG, regardless of the reproductive system (sexual, partially asexual or strictly asexual). 
 
 
 &nbsp;
@@ -84,7 +85,11 @@ If you have only one population in your dataset, go to other vignette *<span sty
 <span style="color:red">If you have haploid data, you can skip to *D. Description of data set*.</span>
 
 
-An *RClone* table must look like:  
+&nbsp;
+
+
+To use *RClone* functions, your data table must look like:  
+
 
 ```{r}
 library(RClone)
@@ -95,6 +100,8 @@ knitr::kable(posidonia[1:10,1:8], align = "c")
 ```
 
 There is only one allele per column and, per locus, alleles are sorted by increasing order.  
+
+
 This is **mandatory** for all *RClone* functions.  
 
 
@@ -104,7 +111,7 @@ As formatting can be source of error, we included functions to help formatting y
 &nbsp;
 
 
-**1, The classic case: one locus per column**  
+**1, The classic infile you could have, one locus per column**  
 
 ```{r, eval = FALSE}
 data(zostera)
@@ -148,7 +155,7 @@ sort_all(zostera)
 
 **3, You already work with Adegenet**  
 
-It's a kind of like the case number 1, but you have to export your `genind` data into table first:  
+Similar to case number 1, except you have to export your `genind` data into table first:  
 
 ```{r, eval = FALSE}
 #library(adegenet)
@@ -263,7 +270,7 @@ knitr::kable(res, align = "c")
 
 
 
-### D.2 Test for reliability of data
+### D.2 Tests for reliability of loci and subsampling of individuals
 
 
 **On loci**
@@ -360,12 +367,14 @@ sample_units(haplodata, haploid = TRUE, vecpop = haplovec, nbrepeat = 1000)
 ```
 
 
+This sub-sampling analysis deliver basic estimates of richness and diversity for an increasing number of sampling units.  
+They can be used to standardise estimates of populations with different sampling effort.  
+
 
 &nbsp;
 
 
-
-## E. Determination of MLL
+## E. Discrimination of clonal lineages
 
 
 ### E.1 psex/psex Fis with pvalue computation
@@ -377,13 +386,11 @@ sample_units(haplodata, haploid = TRUE, vecpop = haplovec, nbrepeat = 1000)
 Basic commands:
 ```{r, eval = FALSE}
 pgen(zostera, vecpop = popvec)
-data(factoR) #for psex
 psex(zostera, vecpop = popvec)
 ```
 <span style="color:red">or, for haploid data:</span>
 ```{r, eval = FALSE}
 pgen(haplodata, haploid = TRUE, vecpop = haplovec)
-data(factoR) #for psex
 psex(haplodata, haploid = TRUE, vecpop = haplovec)
 ```
 
@@ -405,13 +412,11 @@ psex(zostera, vecpop = popvec, nbrepeat = 1000, bar = TRUE)
 
 Results:
 ```{r, eval = FALSE}
-data(factoR)
 res <- psex(zostera, vecpop = popvec, RR = TRUE, nbrepeat = 1000) 
 res$Arcouest[[1]] 
 #if nbrepeat != 0, res contains a table of psex values and a vector of sim-psex values
 ```
 ```{r, echo = FALSE}
-data(factoR)
 knitr::kable(resvigncont2$res2_PS2, align = "c")
 ```
 ```{r, eval = FALSE}
@@ -422,9 +427,7 @@ resvigncont2$res2_PS1$Arcouest[[2]][1:10]
 ```
 
 
-
 &nbsp;
-
 
 
 **Fis, pgen Fis, psex Fis and p-values**
@@ -488,7 +491,6 @@ psex_Fis(zostera, vecpop = popvec, nbrepeat = 1000, bar = TRUE)
 
 Results:
 ```{r, eval = FALSE}
-data(factoR)
 res <- psex_Fis(zostera, vecpop = popvec, RR = TRUE, nbrepeat = 1000) 
 res$Arcouest[[1]] 
 #if nbrepeat != 0, res contains a table of psex values and a vector of sim-psex Fis values
@@ -507,15 +509,13 @@ resvigncont2$res2_PS3$Arcouest[[2]][1:10]
 &nbsp;
 
 
-
- 
-### E.2 MultiLocus Lineages
+### E.2 Tests for MLLs occurrence and assessment of their memberships
 
 
 **Genetic distance matrix computation and threshold definition**
 
 
-On a theoretical diploid population with c = 0.9999 (c, clonality rate).
+On a theoretical diploid population with c = 0.9999 (c, clonality rate):
 
 
 ```{r}
@@ -627,7 +627,7 @@ MLLlist <- MLL_generator2(list(res[[1]]$potential_clones, res[[2]]$potential_clo
 
 
 
-## F. Genotypic diversity and evenness indices calculation  
+## F. Genotypic diversity, richness and evenness indices calculation  
 
 
 ### F.1 Classic genotypic indices
@@ -652,7 +652,7 @@ Results:
 clonal_index(zostera, vecpop = popvec)
 ```
 ```{r, echo = FALSE, results = 'asis'}
-knitr::kable(clonal_index(zostera, vecpop = popvec), align = "c")
+knitr::kable(resvigncont2$res2_ci, align = "c")
 ```
 
 
@@ -726,7 +726,7 @@ res1$c_Pareto
 
 
 
-## G. Spatial description of clonality  
+## G. Spatial components of clonality  
 
 
 ### G.1 Spatial autocorrelation
@@ -989,45 +989,45 @@ knitr::kable(resvigncont2$res2_ee$SaintMalo$results, align = "c")
 
 
    
-## H. BONUS
+## H. BONUS: *"Ready to use"* Table
     
 
-*Summary function:*
+*Summary function of main results:*
 
 
 Basic commands:
 ```{r, eval = FALSE}
-genclone(zostera, coords = coord_zostera, vecpop = popvec)
+GenClone(zostera, coords = coord_zostera, vecpop = popvec)
 ```
 <span style="color:purple">or, with MLL:</span>
 ```{r, eval = FALSE}
-genclone(popsim, coords = coord_sim, listMLL = MLLlist)
+GenClone(popsim, coords = coord_sim, listMLL = MLLlist)
 ```
 <span style="color:red">or, for haploid data:</span>
 ```{r, eval = FALSE}
-genclone(haplodata, haploid = TRUE, coords = coord_haplo)
+GenClone(haplodata, haploid = TRUE, coords = coord_haplo)
 ```
 
 
 Options:
 ```{r, eval = FALSE}
-genclone(zostera, coords = coord_zostera, vecpop = popvec, nbrepeat = 100) #pvalues
-genclone(zostera, coords = coord_zostera, vecpop = popvec, nbrepeat = 1000, bar = TRUE) 
+GenClone(zostera, coords = coord_zostera, vecpop = popvec, nbrepeat = 100) #pvalues
+GenClone(zostera, coords = coord_zostera, vecpop = popvec, nbrepeat = 1000, bar = TRUE) 
 																#could be time consuming
 ```
 
 
 Results:
 ```{r, eval = FALSE}
-genclone(zostera, coords = coord_zostera, vecpop = popvec)
+GenClone(zostera, coords = coord_zostera, vecpop = popvec)
 ```
 ```{r, echo = FALSE, results = 'asis'}
-knitr::kable(resvigncont2$res2_gen[,1:10], longtable = TRUE, align = "c")
-knitr::kable(resvigncont2$res2_gen[,11:17], longtable = TRUE, align = "c")
-knitr::kable(resvigncont2$res2_gen[,18:24], longtable = TRUE, align = "c")
+knitr::kable(resvigncont2$res2_gen[,1:9], longtable = TRUE, align = "c")
+knitr::kable(resvigncont2$res2_gen[,10:16], longtable = TRUE, align = "c")
+knitr::kable(resvigncont2$res2_gen[,17:24], longtable = TRUE, align = "c")
 ```
 
-Arcouest and SaintMalo have *NaN* values for Fis and Fis_WR because some loci are homozygous.
+When a locus is homozygous, it is ignored for Fis and Fis_WR values computation.
 
 
 

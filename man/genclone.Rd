@@ -1,6 +1,8 @@
-\name{genclone}
+\name{GenClone}
 \alias{genclone}
+\alias{GenClone}
 \alias{genclone_core}
+\alias{GenClone_core}
 \alias{popsimgen}
 
 \title{
@@ -12,7 +14,7 @@ Summary function of RClone package
 }
 
 \usage{
-genclone(data1, haploid = FALSE, coords = NULL, vecpop = NULL, listMLL = NULL, 
+GenClone(data1, haploid = FALSE, coords = NULL, vecpop = NULL, listMLL = NULL, 
 			nbrepeat = NULL, bar = FALSE)
 }
 
@@ -44,15 +46,23 @@ option, if \command{TRUE}, displays a progression bar.
 }
 
 \details{
-\command{genclone} returns results of several functions of \command{RClone}:
+\command{GenClone} returns results of several functions of \command{RClone}:
 a summary of \command{MLG_tab}, \command{Fis} on ramets and genets with pvalues
 (resample the population \command{nbrepeat} times, with simulated sexual events),
 \command{B_Pareto} from \command{Pareto_index}, \command{Sp} from 
 \command{autocorrelation} and indexes from \command{clonal_index}.
+
+If no coordinate at all are available, let \command{coords = NULL} as it or
+create a table with always the same number (i.e. "999", "-1", etc.).
+If coordinates are available for some populations only, for the population
+with missing coordinates: replace all the coordinates by the same number, 
+as "999".
+\command{GenClone} cannot handle mix situation with missing coordinates
+only for some units of the population.
 }
 
 \value{
-\command{genclone} returns a table with:
+\command{GenClone} returns a table with:
 \itemize{
 \item{N, the number of units in data1,}
 \item{Lineage, MLG or MLL,}
@@ -90,16 +100,15 @@ Arnaud-Haond et al., 2007, Standardizing methods to address clonality in populat
 }
 
 \author{
-The R implementation of \command{RClone} was written by Diane Bailleul working for Sophie Arnaud-Haond at IFREMER.
+Creator/Author: Diane Bailleul <diane.bailleul.pro@gmail.com> \cr
+Author: Sophie Arnaud-Haond <sophie.arnaud@ifremer.fr> \cr
+Contributor: Solenn Stoeckel
+
+
+The R implementation of \command{RClone} was written by Diane Bailleul.
 
 
 The design was inspired by GenClone program described in Arnaud-Haond & Belkhir (2007).
-
-
-Maintainer: Diane Bailleul <diane.bailleul@gmail.com>
-
-
-Author: Sophie Arnaud-Haond <sohie.arnaud@ifremer.fr>
 }
 
 \seealso{
@@ -110,8 +119,9 @@ Author: Sophie Arnaud-Haond <sohie.arnaud@ifremer.fr>
 data(posidonia)
 data(coord_posidonia)
 
-#genclone(posidonia, coords = coord_posidonia)
-#genclone(posidonia, coords = coord_posidonia, nbrepeat = 1000)
+#GenClone(posidonia) #without coordinates
+#GenClone(posidonia, coords = coord_posidonia) #with coordinates
+#GenClone(posidonia, coords = coord_posidonia, nbrepeat = 1000)
 ##time consuming
 }
 

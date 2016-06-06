@@ -11,8 +11,8 @@ convert_GC <- function(data1, num, ele){
 	}
 	mat_all <- as.data.frame(t(apply(res, 2, function(x) rbind(x))), stringsAsFactors = FALSE)
 
-	if (ncol(mat_all) != ncol(data1)*2) {stop("Warning 1")}
-	if (nrow(mat_all) != nrow(data1)) {stop("Warning 2")}
+	#if (ncol(mat_all) != ncol(data1)*2) {stop("Error: Entry data format might be incorrect")} #error impossible
+	#if (nrow(mat_all) != nrow(data1)) {stop("Error: Entry data format might be incorrect")} #error impossible
 
 	names(mat_all) <- unlist(lapply(names(data1), function(x) paste(x, 1:2, sep = "_")))
 mat_all
@@ -26,11 +26,11 @@ transcript_GC <- function(obj, ele, num1, num2, num3){
 	coord_center <- c(mean(c(0,dataGC[1,2])), mean(c(0,dataGC[1,3])))
 	nb_loci <- dataGC[1,4]
 	ploid <- dataGC[1,5]
-		if (ploid != num1){stop("Ploidy different from indicated")}
+		if (ploid != num1){stop("Error: Ploidy different from indicated")}
 	names_loci <- dataGC[1,6:ncol(dataGC)]
 	names_loci <- as.vector(apply(names_loci, 1:2, function(x) x <- c(as.vector(x))))
-		if (length(names_loci) != nb_loci){stop("Number of loci names different")}
-		if (nb_loci != num2){stop("Number of loci different from indicated")}
+		if (length(names_loci) != nb_loci){stop("Error: Number of loci names different")}
+		if (nb_loci != num2){stop("Error: Number of loci different from indicated")}
 
 	dataGC <- dataGC[-1,]
 	coord <- dataGC[,2:3]
@@ -167,7 +167,7 @@ if (haploid){
 						if (i < 10000){
 							mat[i,] <- paste(paste("      ", i, " ", 1, " ", sep = ""), data1[i,index_l], sep = "")
 						} else {
-							if (i > 10000) stop("Export to Arlequin is not available for N > 10000")
+							if (i > 10000) stop("Error: Export to Arlequin is not available for N > 10000")
 						}
 					}
 				}
@@ -191,7 +191,7 @@ if (haploid){
 							mat[(i*2-1),] <- paste(paste("      ", i, " ", 1, " ", sep = ""), paste(data1[i,index_l], collapse = " "), sep = "")
 							mat[(i*2),] <- paste("             ", paste(data1[i,index_l+1], collapse = " "), sep = "")
 						} else {
-							if (i > 10000) stop("Export to Arlequin is not available for N > 10000")
+							if (i > 10000) stop("Error: Export to Arlequin is not available for N > 10000")
 						}
 					}
 				}
@@ -248,7 +248,7 @@ list_all_obj_core <- function(data1, haploid = FALSE){
 list_all_obj <- function(data1, haploid = FALSE, vecpop = NULL){
 
 		if (length(vecpop) != 0){
-			if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+			if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 			
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -289,7 +289,7 @@ list_all_tab_core <- function(data1, haploid = FALSE){
 list_all_tab <- function(data1, haploid = FALSE, vecpop = NULL){
 
 		if (length(vecpop) != 0){
-			if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+			if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 			
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -329,7 +329,7 @@ list_all_tab2_core <- function(data1, haploid = FALSE){
 list_all_tab2 <- function(data1, haploid = FALSE, vecpop = NULL){
 
 		if (length(vecpop) != 0){			
-			if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+			if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 			
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -367,7 +367,7 @@ MLG_list_core <- function(data1){
 MLG_list <- function(data1, vecpop = NULL){
 
 		if (length(vecpop) != 0){
-			if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+			if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 			
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -404,7 +404,7 @@ MLG_tab_core <- function(data1){
 MLG_tab <- function(data1, vecpop = NULL){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -479,7 +479,7 @@ freq_RR_core <- function(data1, haploid = FALSE, genet = FALSE, RR = FALSE){
 freq_RR <- function(data1, haploid = FALSE, vecpop = NULL, genet = FALSE, RR = FALSE){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -512,7 +512,7 @@ freq_finder <- function(data1, i , j, haploid = FALSE, genet = FALSE, RR = FALSE
 	index_l <- 1:c(ncol(data1)/2)*2-1
 	ncol1 <- 2
 	ncol2 <- 3
-	data2 <- freq_RR(data1, haploid, genet, RR)
+	data2 <- freq_RR(data1, haploid, vecpop = NULL, genet, RR)
 		if (sum(j == index_l) != 0){
 			freq <- data2[as.numeric(rownames(data2[data2==paste("locus", c((j+1)/2), sep="_"),])[which(data2[data2==paste("locus", c((j+1)/2), sep="_"), ncol1]==data1[i,j])]), ncol2]
 		} else {
@@ -577,7 +577,7 @@ pgen <- function(data1, haploid = FALSE, vecpop = NULL, genet = FALSE, RR = FALS
 	}
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -670,7 +670,7 @@ Fis <- function(data1, vecpop = NULL, genet = FALSE, RR = FALSE){
 	}
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -749,7 +749,7 @@ pgen_Fis <- function(data1, vecpop = NULL, genet = FALSE, RR = FALSE){
 	}
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -773,125 +773,156 @@ pgen_Fis <- function(data1, vecpop = NULL, genet = FALSE, RR = FALSE){
 #probability of one genotype with repro events: psex
 ####################################################
 
-#load("C:/Users/Diane/RClone/data/factoR.rda")
 
-psex_core <- function(data1, data2, haploid = FALSE, MLGsim = FALSE, nbrepeat = NULL, bar = FALSE){
-
-	list_genet <- MLG_list(data1)
-	ncol_all <- 2
-	ncol_freq <- 3
-	factoR <- factoR
-	res_pgen <- pgen_core(data1, data2, haploid)
-	tab <- as.data.frame(matrix(NA, ncol = 2, nrow = nrow(data1)))
-
-	if (length(list_genet[which(sapply(list_genet, length) > 1)]) > 1){
-
-	if (MLGsim){
-		for (m in 1:length(list_genet[which(sapply(list_genet, length) > 1)])){
-			recup <- NULL
-			sub_list <- list_genet[which(sapply(list_genet, length) > 1)][[m]]
-			l <- sub_list[1]
-			recup <- c(recup, factoR[nrow(data1),2]/(factoR[length(sub_list), 2]*factoR[c(nrow(data1)-length(sub_list)),2])*
-				(res_pgen[l,])^(length(sub_list))*
-				(1-res_pgen[l,])^(nrow(data1)-length(sub_list)))
-			tab[list_genet[which(sapply(list_genet, length) > 1)][[m]],2] <- recup
-			tab[list_genet[which(sapply(list_genet, length) > 1)][[m]],1] <- list_genet[which(sapply(list_genet, length) > 1)][[m]][1]
-		}
-	} else {
-		for (m in 1:length(list_genet[which(sapply(list_genet, length) > 1)])){
-			recup <- NULL
-				for (l in list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]){
-					recup <- c(recup, factoR[nrow(data1),2]/(factoR[which(list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]==l),2]*factoR[c(nrow(data1)-which(list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]==l)),2])*
-					(res_pgen[l,])^(which(list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]==l))*
-					(1-res_pgen[l,])^(nrow(data1)-which(list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]==l)))
-				}
-			tab[list_genet[which(sapply(list_genet, length) > 1)][[m]][-1],2] <- recup
-			tab[list_genet[which(sapply(list_genet, length) > 1)][[m]][-1],1] <- list_genet[which(sapply(list_genet, length) > 1)][[m]][1]
-		}
-	}
-	names(tab) <- c("genet", "psex")
-	psexFR <- tab
-
-	if (length(nbrepeat) != 0){
-		psex_recup <- NULL
-		nb_loci <- ncol(data1)/2
-		index_l <- 1:c(ncol(data1)/2)*2-1
-		N <- nrow(data1)
-
-	if (bar){
-		total <- nbrepeat
-		pb <- txtProgressBar(min = 0, max = total, style = 3)
-	}
-
-		for (s in 1:nbrepeat){
-			tab2 <- as.data.frame(matrix(NA, nrow = N, ncol = nb_loci*2))
-				for (j in 1:N){
-					for (i in index_l){
-						tab2[j, c(i, i+1)] <- sort(sample(split(data2, data2[,1])[[c((i+1)/2)]][,ncol_all], 2, prob = split(data2, data2[,1])[[c((i+1)/2)]][,ncol_freq], replace = TRUE))
-					}
-				}
-			tab_sim <- tab2
-			colnames(tab_sim) <- colnames(data1)
-			MLG_sim <- unique(tab_sim)
-				if (nrow(MLG_sim) != nrow(tab_sim)){
-					pgen_sim <- pgen_core(tab_sim, data2, haploid)
-					psex_sim <- NULL
-					list_genet_sim <- MLG_list(tab_sim)
-	if (MLGsim){
-						for (m in 1:length(list_genet_sim[which(sapply(list_genet_sim, length) > 1)])){
-							recup <- NULL
-							sub_list <- list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]]
-							l <- sub_list[1]
-							recup <- c(recup, factoR[nrow(tab_sim),2]/(factoR[length(sub_list), 2]*factoR[c(nrow(tab_sim)-length(sub_list)),2])*
-								(pgen_sim[l,])^(length(sub_list))*
-								(1-pgen_sim[l,])^(nrow(tab_sim)-length(sub_list)))
-						}
-					psex_sim <- c(psex_sim, recup)
-	} else {
-						for (m in 1:length(list_genet_sim[which(sapply(list_genet_sim, length) > 1)])){
-							recup <- NULL
-								for(l in list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]){
-									recup <- c(recup, factoR[nrow(tab_sim), 2]/(factoR[which(list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]==l), 2]*factoR[c(nrow(tab_sim)-which(list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]==l)),2])*
-										(pgen_sim[l,])^(which(list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]==l))*
-										(1-pgen_sim[l,])^(nrow(tab_sim)-which(list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]==l)))
-								}
-							psex_sim <- c(psex_sim, recup)
-						}
-	}
-					psex_recup <- c(psex_recup, psex_sim)
-				}
-	if (bar){
-		setTxtProgressBar(pb, s)
-	}
-		}
-
-	psexFR_p <- cbind(psexFR, as.data.frame(matrix(NA, ncol = 1, nrow = nrow(data1))))
-	for (m in 1:length(list_genet[which(sapply(list_genet, length) > 1)])){
-		if (MLGsim){
-			for (l in list_genet[which(sapply(list_genet, length) > 1)][[m]]){
-				psexFR_p[l,3] <- mean(psexFR_p[l,2] > psex_recup)
-			}
-	} else {
-			for (l in list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]){
-				psexFR_p[l,3] <- mean(psexFR_p[l,2] > psex_recup)
-			}
-	}
-	}
-	colnames(psexFR_p) <- c("genet", "psex", "pvalue")
-
-	if (bar){
-		close(pb)
-	}
-
-	psexFR_p[is.na(psexFR_p)] <- ""
-	if (length(psex_recup) < 100){print("Warning: Simulated populations contain few repeated genotypes and p-value estimations may be incorrect.")}
-	list(psexFR_p, psex_recup)
-	} else {
-	psexFR[is.na(psexFR)] <- ""
-	psexFR
-	}
-	}
+psex_core <- function (data1, data2, haploid = FALSE, MLGsim = FALSE, nbrepeat = NULL, bar = FALSE){
+    if (nrow(data1) == nrow(unique(data1))) {
+        print("Warning: no repeated genotype in this population.")
+        psexFR <- NULL
+    }
+    else {
+        list_genet <- MLG_list(data1)
+        ncol_all <- 2
+        ncol_freq <- 3
+        res_pgen <- pgen_core(data1, data2, haploid)
+        tab <- as.data.frame(matrix(NA, ncol = 2, nrow = nrow(data1)))
+        if (length(list_genet[which(sapply(list_genet, length) > 
+            1)]) >= 1) {
+            if (MLGsim) {
+                for (m in 1:length(list_genet[which(sapply(list_genet, 
+                  length) > 1)])) {
+                  recup <- NULL
+                  sub_list <- list_genet[which(sapply(list_genet, 
+                    length) > 1)][[m]]
+                  l <- sub_list[1]
+                  recup <- c(recup, dbinom(length(sub_list), 
+                    nrow(data1), res_pgen[l, ]))
+                  tab[list_genet[which(sapply(list_genet, length) > 
+                    1)][[m]], 2] <- recup
+                  tab[list_genet[which(sapply(list_genet, length) > 
+                    1)][[m]], 1] <- list_genet[which(sapply(list_genet, 
+                    length) > 1)][[m]][1]
+                }
+            }
+            else {
+                for (m in 1:length(list_genet[which(sapply(list_genet, 
+                  length) > 1)])) {
+                  recup <- NULL
+                  for (l in list_genet[which(sapply(list_genet, 
+                    length) > 1)][[m]][-1]) {
+                    recup <- c(recup, dbinom(which(list_genet[which(sapply(list_genet, 
+                      length) > 1)][[m]][-1] == l), nrow(data1), 
+                      res_pgen[l, ]))
+                  }
+                  tab[list_genet[which(sapply(list_genet, length) > 
+                    1)][[m]][-1], 2] <- recup
+                  tab[list_genet[which(sapply(list_genet, length) > 
+                    1)][[m]][-1], 1] <- list_genet[which(sapply(list_genet, 
+                    length) > 1)][[m]][1]
+                }
+            }
+            names(tab) <- c("genet", "psex")
+            psexFR <- tab
+            if (length(nbrepeat) != 0) {
+                psex_recup <- NULL
+                nb_loci <- ncol(data1)/2
+                index_l <- 1:c(ncol(data1)/2) * 2 - 1
+                N <- nrow(data1)
+                if (bar) {
+                  total <- nbrepeat
+                  pb <- txtProgressBar(min = 0, max = total, 
+                    style = 3)
+                }
+				liste_all <- c(rep(1:length(unique(data2[, 1])), 
+					times = table(data2[, 1])[unique(data2[, 1])]))
+                for (s in 1:nbrepeat) {
+                  tab2 <- as.data.frame(matrix(NA, nrow = N, 
+                    ncol = nb_loci * 2))
+                  for (j in 1:N) {
+                    for (i in index_l) {
+                      tab2[j, c(i, i + 1)] <- sort(sample(split(data2, 
+                        liste_all)[[c((i + 1)/2)]][, ncol_all], 
+                        2, prob = split(data2, liste_all)[[c((i + 
+                          1)/2)]][, ncol_freq], replace = TRUE))
+                    }
+                  }
+                  tab_sim <- tab2
+                  colnames(tab_sim) <- colnames(data1)
+                  MLG_sim <- unique(tab_sim)
+                  if (nrow(MLG_sim) != nrow(tab_sim)) {
+                    pgen_sim <- pgen_core(tab_sim, data2, haploid)
+                    psex_sim <- NULL
+                    list_genet_sim <- MLG_list(tab_sim)
+                    if (MLGsim) {
+                      for (m in 1:length(list_genet_sim[which(sapply(list_genet_sim, 
+                        length) > 1)])) {
+                        recup <- NULL
+                        sub_list <- list_genet_sim[which(sapply(list_genet_sim, 
+                          length) > 1)][[m]]
+                        l <- sub_list[1]
+                        recup <- c(recup, dbinom(length(sub_list), 
+                          nrow(tab_sim), pgen_sim[l, ]))
+                      }
+                      psex_sim <- c(psex_sim, recup)
+                    }
+                    else {
+                      for (m in 1:length(list_genet_sim[which(sapply(list_genet_sim, 
+                        length) > 1)])) {
+                        recup <- NULL
+                        for (l in list_genet_sim[which(sapply(list_genet_sim, 
+                          length) > 1)][[m]][-1]) {
+                          recup <- c(recup, dbinom(which(list_genet_sim[which(sapply(list_genet_sim, 
+                            length) > 1)][[m]][-1] == l), nrow(tab_sim), 
+                            pgen_sim[l, ]))
+                        }
+                        psex_sim <- c(psex_sim, recup)
+                      }
+                    }
+                    psex_recup <- c(psex_recup, psex_sim)
+                  }
+                  if (bar) {
+                    setTxtProgressBar(pb, s)
+                  }
+                }
+                psexFR_p <- cbind(psexFR, as.data.frame(matrix(NA, 
+                  ncol = 1, nrow = nrow(data1))))
+                for (m in 1:length(list_genet[which(sapply(list_genet, 
+                  length) > 1)])) {
+                  if (MLGsim) {
+                    for (l in list_genet[which(sapply(list_genet, 
+                      length) > 1)][[m]]) {
+                      psexFR_p[l, 3] <- mean(psexFR_p[l, 2] > 
+                        psex_recup)
+                    }
+                  }
+                  else {
+                    for (l in list_genet[which(sapply(list_genet, 
+                      length) > 1)][[m]][-1]) {
+                      psexFR_p[l, 3] <- mean(psexFR_p[l, 2] > 
+                        psex_recup)
+                    }
+                  }
+                }
+                colnames(psexFR_p) <- c("genet", "psex", "pvalue")
+                if (bar) {
+                  close(pb)
+                }
+                psexFR_p[is.na(psexFR_p)] <- ""
+				if (length(psex_recup) == 0) {
+                  print("Warning: No clone was found during Simulations.")
+                }
+                if (length(psex_recup) >= 1 & length(psex_recup) < 100) {
+                  print("Warning: Simulated populations contain few repeated genotypes and p-value estimations may be incorrect.")
+                }
+                list(psexFR_p, psex_recup)
+            }
+            else {
+                psexFR[is.na(psexFR)] <- ""
+                psexFR
+            }
+        }
+    }
 }
+
 
 
 psex <- function(data1, haploid = FALSE, vecpop = NULL, genet = FALSE, RR = FALSE, MLGsim = FALSE, nbrepeat = NULL, bar = FALSE){
@@ -908,7 +939,7 @@ psex <- function(data1, haploid = FALSE, vecpop = NULL, genet = FALSE, RR = FALS
 	}
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -931,123 +962,154 @@ psex <- function(data1, haploid = FALSE, vecpop = NULL, genet = FALSE, RR = FALS
 #probability of one genotype with repro events and H-W deviation: psexFis
 #########################################################################
 
-psex_Fis_core <- function(data1, data2, MLGsim = FALSE, genet = FALSE, RR = FALSE, nbrepeat = NULL, bar = FALSE){
-
-	ncol_all <- 2
-	ncol_freq <- 3
-	factoR <- factoR
-	pgenFis <- pgen_Fis_core(data1, data2, genet, RR)
-	tab <- as.data.frame(matrix(NA, ncol = 2, nrow = nrow(data1)))
-	list_genet <- MLG_list(data1)
-
-	if (length(list_genet[which(sapply(list_genet, length) > 1)]) > 1){
-
-	if (MLGsim){
-		for (m in 1:length(list_genet[which(sapply(list_genet, length) > 1)])){
-			recup <- NULL
-			sub_list <- list_genet[which(sapply(list_genet, length) > 1)][[m]]
-			l <- sub_list[1]
-			recup <- c(recup, factoR[nrow(data1),2]/(factoR[length(sub_list), 2]*factoR[c(nrow(data1)-length(sub_list)),2])*
-				(pgenFis[l,])^(length(sub_list))*
-				(1-pgenFis[l,])^(nrow(data1)-length(sub_list)))
-			tab[list_genet[which(sapply(list_genet, length) > 1)][[m]],2] <- recup
-			tab[list_genet[which(sapply(list_genet, length) > 1)][[m]],1] <- list_genet[which(sapply(list_genet, length) > 1)][[m]][1]
-		}
-	} else {
-		for (m in 1:length(list_genet[which(sapply(list_genet, length) > 1)])){
-			recup <- NULL
-				for (l in list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]){
-					recup <- c(recup, factoR[nrow(data1),2]/(factoR[which(list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]==l),2]*factoR[c(nrow(data1)-which(list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]==l)),2])*
-					(pgenFis[l,])^(which(list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]==l))*
-					(1-pgenFis[l,])^(nrow(data1)-which(list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]==l)))
-				}
-			tab[list_genet[which(sapply(list_genet, length) > 1)][[m]][-1],2] <- recup
-			tab[list_genet[which(sapply(list_genet, length) > 1)][[m]][-1],1] <- list_genet[which(sapply(list_genet, length) > 1)][[m]][1]
-		}
-	}
-	names(tab) <- c("genet", "psexFis")
-	psexFR_Fis <- tab
-
-	if (length(nbrepeat) != 0){
-		psexFis_recup <- NULL
-		nb_loci <- ncol(data1)/2
-		index_l <- 1:c(ncol(data1)/2)*2-1
-		N <- nrow(data1)
-
-	if (bar){
-		total <- nbrepeat
-		pb <- txtProgressBar(min = 0, max = total, style = 3)
-	}
-
-		for (s in 1:nbrepeat){
-			tab2 <- as.data.frame(matrix(NA, nrow = N, ncol = nb_loci*2))
-				for (j in 1:N){
-					for (i in index_l){
-						tab2[j, c(i, i+1)] <- sort(sample(split(data2, data2[,1])[[c((i+1)/2)]][,ncol_all], 2, prob = split(data2, data2[,1])[[c((i+1)/2)]][,ncol_freq], replace = TRUE))
-					}
-				}
-			tab_sim <- tab2
-			colnames(tab_sim) <- colnames(data1)
-			MLG_sim <- unique(tab_sim)
-				if (nrow(MLG_sim) != nrow(tab_sim)){
-					pgenFis_sim <- pgen_Fis_core(tab_sim, data2)
-					psexFis_sim <- NULL
-					list_genet_sim <- MLG_list(tab_sim)
-	if (MLGsim){
-						for (m in 1:length(list_genet_sim[which(sapply(list_genet_sim, length) > 1)])){
-							recup <- NULL
-							sub_list <- list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]]
-							l <- sub_list[1]
-							recup <- c(recup, factoR[nrow(tab_sim),2]/(factoR[length(sub_list), 2]*factoR[c(nrow(tab_sim)-length(sub_list)),2])*
-								(pgenFis_sim[l,])^(length(sub_list))*
-								(1-pgenFis_sim[l,])^(nrow(tab_sim)-length(sub_list)))
-						}
-					psexFis_sim <- c(psexFis_sim, recup)
-	} else {
-						for (m in 1:length(list_genet_sim[which(sapply(list_genet_sim, length) > 1)])){
-							recup <- NULL
-								for (l in list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]){
-									recup <- c(recup, factoR[nrow(tab_sim), 2]/(factoR[which(list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]==l), 2]*factoR[c(nrow(tab_sim)-which(list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]==l)),2])*
-										(pgenFis_sim[l,])^(which(list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]==l))*
-										(1-pgenFis_sim[l,])^(nrow(tab_sim)-which(list_genet_sim[which(sapply(list_genet_sim, length) > 1)][[m]][-1]==l)))
-								}
-							psexFis_sim <- c(psexFis_sim, recup)
-						}
-	}
-					psexFis_recup <- c(psexFis_recup, psexFis_sim)
-				}
-
-	if (bar){
-		setTxtProgressBar(pb, s)
-	}
-		}
-	if (length(psexFis_recup) == 0){stop("No clone was found during Simulations.")}
-
-	psexFR_p <- cbind(psexFR_Fis, as.data.frame(matrix(NA, ncol = 1, nrow = nrow(data1))))
-		for (m in 1:length(list_genet[which(sapply(list_genet, length) > 1)])){
-			if (MLGsim){
-				for (l in list_genet[which(sapply(list_genet, length) > 1)][[m]]){
-					psexFR_p[l,3] <- mean(psexFR_p[l,2] > psexFis_recup)
-				}
-			} else {
-				for (l in list_genet[which(sapply(list_genet, length) > 1)][[m]][-1]){
-					psexFR_p[l,3] <- mean(psexFR_p[l,2] > psexFis_recup)
-				}
-		}
-	}
-	colnames(psexFR_p) <- c("genet", "psexFis", "pvalue")
-
-	if (bar){
-		close(pb)
-	}
-	psexFR_p[is.na(psexFR_p)] <- ""
-		if (length(psexFis_recup) < 100){print("Warning: Simulated populations contain few repeated genotypes and p-value estimations may be incorrect.")}
-	list(psexFR_p, psexFis_recup)
-	} else {
-	psexFR_Fis[is.na(psexFR_Fis)] <- ""
-	psexFR_Fis
-	}
-	}
+psex_Fis_core <- function (data1, data2, MLGsim = FALSE, genet = FALSE, RR = FALSE, nbrepeat = NULL, bar = FALSE) 
+{
+    if (nrow(data1) == nrow(unique(data1))) {
+        print("Warning: no repeated genotype in this population.")
+        psexFR_Fis <- NULL
+    }
+    else {
+        ncol_all <- 2
+        ncol_freq <- 3
+        pgenFis <- pgen_Fis_core(data1, data2, genet, RR)
+        tab <- as.data.frame(matrix(NA, ncol = 2, nrow = nrow(data1)))
+        list_genet <- MLG_list(data1)
+        if (length(list_genet[which(sapply(list_genet, length) > 
+            1)]) >= 1) {
+            if (MLGsim) {
+                for (m in 1:length(list_genet[which(sapply(list_genet, 
+                  length) > 1)])) {
+                  recup <- NULL
+                  sub_list <- list_genet[which(sapply(list_genet, 
+                    length) > 1)][[m]]
+                  l <- sub_list[1]
+                  recup <- c(recup, dbinom(length(sub_list), 
+                    nrow(data1), pgenFis[l, ]))
+                  tab[list_genet[which(sapply(list_genet, length) > 
+                    1)][[m]], 2] <- recup
+                  tab[list_genet[which(sapply(list_genet, length) > 
+                    1)][[m]], 1] <- list_genet[which(sapply(list_genet, 
+                    length) > 1)][[m]][1]
+                }
+            }
+            else {
+                for (m in 1:length(list_genet[which(sapply(list_genet, 
+                  length) > 1)])) {
+                  recup <- NULL
+                  for (l in list_genet[which(sapply(list_genet, 
+                    length) > 1)][[m]][-1]) {
+                    recup <- c(recup, dbinom(which(list_genet[which(sapply(list_genet, 
+                      length) > 1)][[m]][-1] == l), nrow(data1), 
+                      pgenFis[l, ]))
+                  }
+                  tab[list_genet[which(sapply(list_genet, length) > 
+                    1)][[m]][-1], 2] <- recup
+                  tab[list_genet[which(sapply(list_genet, length) > 
+                    1)][[m]][-1], 1] <- list_genet[which(sapply(list_genet, 
+                    length) > 1)][[m]][1]
+                }
+            }
+            names(tab) <- c("genet", "psexFis")
+            psexFR_Fis <- tab
+            if (length(nbrepeat) != 0) {
+                psexFis_recup <- NULL
+                nb_loci <- ncol(data1)/2
+                index_l <- 1:c(ncol(data1)/2) * 2 - 1
+                N <- nrow(data1)
+                if (bar) {
+                  total <- nbrepeat
+                  pb <- txtProgressBar(min = 0, max = total, 
+                    style = 3)
+                }
+				liste_all <- c(rep(1:length(unique(data2[, 1])), 
+					times = table(data2[, 1])[unique(data2[, 1])]))
+                for (s in 1:nbrepeat) {
+                  tab2 <- as.data.frame(matrix(NA, nrow = N, 
+                    ncol = nb_loci * 2))
+                  for (j in 1:N) {
+                    for (i in index_l) {
+                      tab2[j, c(i, i + 1)] <- sort(sample(split(data2, 
+                        liste_all)[[c((i + 1)/2)]][, ncol_all], 
+                        2, prob = split(data2, liste_all)[[c((i + 
+                          1)/2)]][, ncol_freq], replace = TRUE))
+                    }
+                  }
+                  tab_sim <- tab2
+                  colnames(tab_sim) <- colnames(data1)
+                  MLG_sim <- unique(tab_sim)
+                  if (nrow(MLG_sim) != nrow(tab_sim)) {
+                    pgenFis_sim <- pgen_Fis_core(tab_sim, data2)
+                    psexFis_sim <- NULL
+                    list_genet_sim <- MLG_list(tab_sim)
+                    if (MLGsim) {
+                      for (m in 1:length(list_genet_sim[which(sapply(list_genet_sim, 
+                        length) > 1)])) {
+                        recup <- NULL
+                        sub_list <- list_genet_sim[which(sapply(list_genet_sim, 
+                          length) > 1)][[m]]
+                        l <- sub_list[1]
+                        recup <- c(recup, dbinom(length(sub_list), 
+                          nrow(tab_sim), pgenFis_sim[l, ]))
+                      }
+                      psexFis_sim <- c(psexFis_sim, recup)
+                    }
+                    else {
+                      for (m in 1:length(list_genet_sim[which(sapply(list_genet_sim, 
+                        length) > 1)])) {
+                        recup <- NULL
+                        for (l in list_genet_sim[which(sapply(list_genet_sim, 
+                          length) > 1)][[m]][-1]) {
+                          recup <- c(recup, dbinom(which(list_genet_sim[which(sapply(list_genet_sim, 
+                            length) > 1)][[m]][-1] == l), nrow(tab_sim), 
+                            pgenFis_sim[l, ]))
+                        }
+                        psexFis_sim <- c(psexFis_sim, recup)
+                      }
+                    }
+                    psexFis_recup <- c(psexFis_recup, psexFis_sim)
+                  }
+                  if (bar) {
+                    setTxtProgressBar(pb, s)
+                  }
+                }
+                psexFR_p <- cbind(psexFR_Fis, as.data.frame(matrix(NA, 
+                  ncol = 1, nrow = nrow(data1))))
+                for (m in 1:length(list_genet[which(sapply(list_genet, 
+                  length) > 1)])) {
+                  if (MLGsim) {
+                    for (l in list_genet[which(sapply(list_genet, 
+                      length) > 1)][[m]]) {
+                      psexFR_p[l, 3] <- mean(psexFR_p[l, 2] > 
+                        psexFis_recup)
+                    }
+                  }
+                  else {
+                    for (l in list_genet[which(sapply(list_genet, 
+                      length) > 1)][[m]][-1]) {
+                      psexFR_p[l, 3] <- mean(psexFR_p[l, 2] > 
+                        psexFis_recup)
+                    }
+                  }
+                }
+                colnames(psexFR_p) <- c("genet", "psexFis", "pvalue")
+                if (bar) {
+                  close(pb)
+                }
+                psexFR_p[is.na(psexFR_p)] <- ""
+                if (length(psexFis_recup) == 0) {
+                  print("Warning: No clone was found during Simulations.")
+                }
+                if (length(psexFis_recup) >=1 & length(psexFis_recup) < 100) {
+                  print("Warning: Simulated populations contain few repeated genotypes and p-value estimations may be incorrect.")
+                }
+                list(psexFR_p, psexFis_recup)
+            }
+            else {
+                psexFR_Fis[is.na(psexFR_Fis)] <- ""
+                psexFR_Fis
+            }
+        }
+    }
 }
 
 
@@ -1065,7 +1127,7 @@ psex_Fis <- function(data1, vecpop = NULL, genet = FALSE, RR = FALSE, MLGsim = F
 	}
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -1200,7 +1262,7 @@ res
 sample_loci <- function(data1, haploid = FALSE, vecpop = NULL, nbrepeat = 1000, He = FALSE, graph = FALSE, export = FALSE, bar = FALSE){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -1361,7 +1423,7 @@ res
 sample_units <- function(data1, haploid = FALSE, vecpop = NULL, nbrepeat = 1000, He = FALSE, graph = FALSE, export = FALSE, bar = FALSE){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -1374,20 +1436,27 @@ sample_units <- function(data1, haploid = FALSE, vecpop = NULL, nbrepeat = 1000,
 					res[[p]] <- sample_units_core(datatot[[p]], haploid, nbrepeat, He, graph, bar)
 					par(ask = FALSE)
 
+					if (graph){
+						par(ask = TRUE)
+						boxplot(res[[p]]$raw_MLG, ylab = "Number of multilocus genotypes", 
+							xlab = "Number of units sampled")
+						title(paste("Genotype accumulation curve"))
+						par(ask = FALSE)
+					}
 					if (export){
-						postscript(paste(paste("sample_units", unique(vecpop)[[p]], sep = "_"), ".eps", sep = ""), onefile = FALSE, paper = "letter")
+						postscript(file = paste(paste("sample_units", unique(vecpop)[[p]], sep = "_"), ".eps", sep = ""), onefile = FALSE, paper = "letter")
 						boxplot(res[[p]]$raw_MLG, ylab = "Number of multilocus genotypes", 
 							xlab = "Number of units sampled")
 						title(paste("Genotype accumulation curve"))
 						dev.off()
-					}
+					}				
 				}
 					names(res) <- unique(vecpop_o)
 		} else {
 			res <- sample_units_core(data1, haploid, nbrepeat, He, graph, bar)
 				if (export){
-					postscript("sample_units.eps", onefile = FALSE, paper = "letter")
-					boxplot(res[[p]]$raw_MLG, ylab = "Number of multilocus genotypes", 
+					postscript(file = "sample_units.eps", onefile = FALSE, paper = "letter")
+					boxplot(res$raw_MLG, ylab = "Number of multilocus genotypes", 
 						xlab = "Number of units sampled")
 					title(paste("Genotype accumulation curve"))
 					dev.off()
@@ -1605,7 +1674,7 @@ genet_dist <- function(data1, haploid = FALSE, vecpop = NULL, manh = FALSE, manh
 			alpha1 = NULL, alpha2 = NULL, export = FALSE){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -1711,7 +1780,7 @@ genet_dist_sim <- function(data1, haploid = FALSE, vecpop = NULL, nbrepeat = 100
 				breaking = NULL, export = FALSE){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)){stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)){stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -1802,7 +1871,7 @@ MLL_generator_core <- function(data1, haploid = FALSE, manh = FALSE, manh_w = FA
 MLL_generator <- function(data1, haploid = FALSE, vecpop = NULL, manh = FALSE, manh_w = FALSE, alpha1 = NULL, alpha2 = NULL){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -1888,64 +1957,72 @@ clonal_index_core <- function(data1, listMLL = NULL){
 
 	N <- nrow(data1)
 	if (length(listMLL) != 0){
-			list_genet <- listMLL
-		if (length(unlist(list_genet)) != nrow(data1)){stop("MLL list does not compute")}
-			G <- length(listMLL)
-		} else {
-			G <- nrow(unique(data1))
-        		list_genet <- MLG_list(data1)
-		}
-
-        if (G != N){
-                R <- (G-1)/(N-1) ##Clonal diversity Dorken & Eckert : R
-
-        count_MLG <- unlist(lapply(list_genet, length))
-        freq_MLG <- count_MLG/N
-
-G0 <- 1/sum(freq_MLG*freq_MLG) ##Estimate of genotypic diversity/Stoddart
-Ge <- 1/(sum(freq_MLG[which(count_MLG > 1)]*freq_MLG[which(count_MLG > 1)])+(sum(freq_MLG[which(count_MLG < 1)])/N)) ##Estimate of expected genotypic diversity under H-W
-
-                Hpp <- -sum((count_MLG/N)*log(count_MLG/N)) ##Shannon-Wiener index estimator : Hpp
-                Jp <- Hpp/log(G) ##Pielou evenness: Jp
-        Ls <- sum((count_MLG*(count_MLG-1))/(N*(N-1))) ##Simpson unbiased : Ls
-                Dp <- 1-Ls ##Simpson complement unbiased : Dp
-        Dmin <- (((2*N-G)*(G-1))/(N*N))*(N/(N-1))
-        Dmax <- ((G-1)/G)*(N/(N-1))
-                V <- (Dp-Dmin)/(Dmax-Dmin) ##Simpson complement index : V
-                Hill <- 1/Ls ##Reciprocal of Simpson index unbiased : 1/Ls HILL
-
-        tab <- as.data.frame(matrix(c(G, R, Hpp, Jp, Dp, V, Hill), nrow = 1))
-
-	if(length(listMLL) != 0){
-		rownames(tab) <- "MLL"
+		list_genet <- listMLL
+			if (length(unlist(list_genet)) != nrow(data1)){stop("MLL list does not compute")}
+		G <- length(listMLL)
 	} else {
-		rownames(tab) <- "MLG"
+		G <- nrow(unique(data1))
+        	list_genet <- MLG_list(data1)
 	}
-	names(tab) <- c("G", "R", "H''", "J'", "D", "V", "Hill")
-	tab       
-}
+
+	if (G != N){
+		R <- (G-1)/(N-1) ##Clonal diversity Dorken & Eckert : R
+
+		count_MLG <- unlist(lapply(list_genet, length))
+		freq_MLG <- count_MLG/N
+
+			G0 <- 1/sum(freq_MLG*freq_MLG) ##Estimate of genotypic diversity/Stoddart
+			Ge <- 1/(sum(freq_MLG[which(count_MLG > 1)]*freq_MLG[which(count_MLG > 1)])+(sum(freq_MLG[which(count_MLG < 1)])/N)) ##Estimate of expected genotypic diversity under H-W
+
+		Hpp <- -sum((count_MLG/N)*log(count_MLG/N)) ##Shannon-Wiener index estimator : Hpp
+		Jp <- Hpp/log(G) ##Pielou evenness: Jp
+			Ls <- sum((count_MLG*(count_MLG-1))/(N*(N-1))) ##Simpson unbiased : Ls
+		Dp <- 1-Ls ##Simpson complement unbiased : Dp
+        		Dmin <- (((2*N-G)*(G-1))/(N*N))*(N/(N-1))
+        		Dmax <- ((G-1)/G)*(N/(N-1))
+		V <- (Dp-Dmin)/(Dmax-Dmin) ##Simpson complement index : V
+		Hill <- 1/Ls ##Reciprocal of Simpson index unbiased : 1/Ls HILL
+
+		tab <- as.data.frame(matrix(c(N, G, R, Hpp, Jp, Dp, V, Hill), nrow = 1))
+
+			if(length(listMLL) != 0){
+				rownames(tab) <- "MLL"
+			} else {
+				rownames(tab) <- "MLG"
+			}
+
+		names(tab) <- c("N", "G", "R", "H''", "J'", "D", "V", "Hill")
+		tab       
+	} else {
+		tab <- as.data.frame(matrix(NA, ncol = 8, nrow = 1))
+		names(tab) <- c("N", "G", "R", "H''", "J'", "D", "V", "Hill")
+		tab[,1] <- N
+		tab[,2] <- G
+		tab[,3] <- 1
+		tab
+	}
 }
 
 
 clonal_index <- function(data1, vecpop = NULL, listMLL = NULL){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 
 		vecpop_o <- as.character(vecpop)
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
 
 		datatot <- split(data1, vecpop)
-			res <- as.data.frame(matrix(NA, ncol = 7, nrow = length(unique(vecpop))))
+			res <- as.data.frame(matrix(NA, ncol = 8, nrow = length(unique(vecpop))))
 				for (p in 1:length(unique(vecpop))){
 					rownames(datatot[[p]]) <- 1:nrow(datatot[[p]])
 					resu <- clonal_index_core(datatot[[p]], listMLL[[p]])
 						if(length(resu) != 0){
 							res[p,] <- resu
-						} else {res[p,] <- rep(0, 7)}
+						} else {res[p,] <- rep(NA, 8)}
 					rownames(res)[p] <- unique(vecpop_o)[p]
 				}
-			names(res) <- c("G", "R", "H''", "J'", "D", "V", "Hill")
+			names(res) <- c("N","G", "R", "H''", "J'", "D", "V", "Hill")
 		} else {
 			res <- clonal_index_core(data1, listMLL)
 		}
@@ -2028,7 +2105,7 @@ if (full){
 Pareto_index <- function(data1, vecpop = NULL, listMLL = NULL, full = FALSE, graph = FALSE, legends = 1, export = FALSE){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -2170,7 +2247,7 @@ as.dist(mat_auto)
 kinship_Loiselle <- function(data1, haploid = FALSE, vecpop = NULL){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)))
@@ -2257,7 +2334,7 @@ as.dist(mat_Rit2)
 kinship_Ritland <- function(data1, haploid = FALSE, vecpop = NULL){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)))
 
@@ -2357,6 +2434,9 @@ autocorrelation_core <- function(data1, haploid = FALSE, coords = NULL, listMLL 
 
 if (length(listMLL) != 0 & genet){
 	if (!central_coords & !random_unit & !weighted){stop("You must choose a MLG genets methods for MLL.")}
+}
+if (genet){
+	if (!central_coords & !random_unit & !weighted){stop("You must choose a MLG genets methods.")}
 }
 
         ncol_all <- 2
@@ -2724,11 +2804,16 @@ if (length(nbrepeat) != 0){
 	tabres <- cbind(tabres, pval_kin)
 
 	tabres3 <- as.data.frame(cbind(b, b_log, Sp, Sp_log))
+	down005 <- ceiling(nbrepeat*0.025)
+	up005 <- nbrepeat*0.975
+	down01 <- ceiling(nbrepeat*0.05)
+	up01 <- nbrepeat*0.95
+
 	tabres3 <- rbind(tabres3, apply(tabsim, 2, mean), apply(tabsim, 2, sd),
-	c(sort(tabsim[,1])[nbrepeat*0.025], sort(tabsim[,2])[nbrepeat*0.025], sort(tabsim[,3])[nbrepeat*0.025], sort(tabsim[,4])[nbrepeat*0.025]),
-	c(sort(tabsim[,1])[nbrepeat*0.975], sort(tabsim[,2])[nbrepeat*0.975], sort(tabsim[,3])[nbrepeat*0.975], sort(tabsim[,4])[nbrepeat*0.975]),
-	c(sort(tabsim[,1])[nbrepeat*0.05], sort(tabsim[,2])[nbrepeat*0.05], sort(tabsim[,3])[nbrepeat*0.05], sort(tabsim[,4])[nbrepeat*0.05]),
-	c(sort(tabsim[,1])[nbrepeat*0.95], sort(tabsim[,2])[nbrepeat*0.95], sort(tabsim[,3])[nbrepeat*0.95], sort(tabsim[,4])[nbrepeat*0.95]),
+	c(sort(tabsim[,1])[down005], sort(tabsim[,2])[down005], sort(tabsim[,3])[down005], sort(tabsim[,4])[down005]),
+	c(sort(tabsim[,1])[up005], sort(tabsim[,2])[up005], sort(tabsim[,3])[up005], sort(tabsim[,4])[up005]),
+	c(sort(tabsim[,1])[down01], sort(tabsim[,2])[down01], sort(tabsim[,3])[down01], sort(tabsim[,4])[down01]),
+	c(sort(tabsim[,1])[up01], sort(tabsim[,2])[up01], sort(tabsim[,3])[up01], sort(tabsim[,4])[up01]),
 	c(mean(tabsim[,1] <= b), mean(tabsim[,2] <= b_log), mean(tabsim[,3] <= Sp), mean(tabsim[,4] <= Sp_log)),
 	c(mean(tabsim[,1] >= b), mean(tabsim[,2] >= b_log), mean(tabsim[,3] >= Sp), mean(tabsim[,4] >= Sp_log)),
 	c(if (2*min(mean(tabsim[,1] <= b), mean(tabsim[,1] >= b)) > 1) {1} else {2*min(mean(tabsim[,1] <= b), mean(tabsim[,1] >= b))},
@@ -2773,7 +2858,7 @@ autocorrelation <- function(data1, haploid = FALSE, coords = NULL, vecpop = NULL
 	graph = FALSE, nbrepeat = NULL, export = FALSE){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -3048,7 +3133,7 @@ clonal_sub <- function(data1, coords = NULL, vecpop = NULL, listMLL = NULL, clas
 	d = NULL, vecdist = NULL){
 	
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -3143,7 +3228,7 @@ list("results" = cbind(Ac, pval, nbrepeat), "simulation" = recup_p)
 agg_index <- function(data1, coords = NULL, vecpop = NULL, nbrepeat = 1, bar = FALSE, listMLL = NULL){
 	
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -3252,7 +3337,7 @@ list("results" = as.data.frame(cbind(Ee, pval_Ee, nbrepeat)), "simulations" = re
 edge_effect <- function(data1, coords = NULL, center = NULL, vecpop = NULL, nbrepeat = 1, bar = FALSE, listMLL = NULL){
 	
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)) {stop("Error: vecpop length is not equal to the number of rows of your dataset.")}
 
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
@@ -3275,7 +3360,7 @@ edge_effect <- function(data1, coords = NULL, center = NULL, vecpop = NULL, nbre
 
 
 #################
-#Fonction bonus :
+#Bonus function :
 #################
 
 popsimgen <- function(data1, haploid = FALSE){
@@ -3306,25 +3391,34 @@ tab_sim
 }
 
 
-genclone_core <- function(data1, data2, haploid = FALSE, coords = NULL, listMLL = NULL, nbrepeat = NULL, bar = FALSE){
+GenClone_core <- function(data1, data2, haploid = FALSE, coords = NULL, listMLL = NULL, nbrepeat = NULL, bar = FALSE){
 
 	N <- nrow(data1)
-	if (length(listMLL) != 0){
+
+	if (length(coords) == 0){
+		nocoords <- TRUE
+	} else if (sum(coords[,1] == coords[1,1]) == nrow(coords) & sum(coords[,2] == coords[1,2]) == nrow(coords)){
+		nocoords <- TRUE
+	} else {
+		nocoords <- FALSE
+	}	
+
+		if (length(listMLL) != 0){
 			list_genet <- listMLL
-if (length(unlist(list_genet)) != nrow(data1)){stop("MLL list does not compute")}
+				if (length(unlist(list_genet)) != nrow(data1)){stop("MLL list does not compute")}
 			G <- length(listMLL)
-			if(G == nrow(unique(data1))){
-				L <- "MLG"
-			} else {
-				L <- "MLL"
-			}
+				if (G == nrow(unique(data1))){
+					L <- "MLG"
+				} else {
+					L <- "MLL"
+				}
 		} else {
 			G <- nrow(unique(data1))
         		list_genet <- MLG_list(data1)
 			L <- "MLG"
 		}
 
-	if(haploid){
+	if (haploid){
 		nb_all <- mean(sapply(apply(data1, 2, unique), length))
 		SE <- sd(sapply(apply(data1, 2, unique), length))/sqrt(length(sapply(apply(data1, 2, unique), length)))
 		res_Fis <- NA
@@ -3334,16 +3428,26 @@ if (length(unlist(list_genet)) != nrow(data1)){stop("MLL list does not compute")
 	} else {
 		index_l <- 1:c(ncol(data1)/2)*2-1
 		recup <- NULL
-		for(i in index_l){ 
-			recup <- c(recup, length(unique(c(data1[,i], data1[,i+1]))))
-		}
+			for(i in index_l){ 
+				recup <- c(recup, length(unique(c(data1[,i], data1[,i+1]))))
+			}
 		nb_all <- mean(recup)
 		SE <- sd(recup)/sqrt(length(recup))
 
-	res_Fis <- mean(Fis_core(data1, data2, genet = FALSE, RR = FALSE)[,4])
-	res_Fis_WR <- mean(Fis_core(data1, data2, genet = TRUE, RR = FALSE)[,4])
+	res_Fis_0 <- Fis_core(data1, data2, genet = FALSE, RR = FALSE)[,4]
+		if (sum(is.na(res_Fis_0)) != 0){
+			res_Fis <- mean(res_Fis_0[-which(is.na(res_Fis_0))])
+		} else {
+			res_Fis <- mean(res_Fis_0)
+		}
+	res_Fis_WR_0 <- Fis_core(data1, data2, genet = TRUE, RR = FALSE)[,4]
+		if (sum(is.na(res_Fis_WR_0)) != 0){
+			res_Fis_WR <- mean(res_Fis_WR_0[-which(is.na(res_Fis_WR_0))])
+		} else {
+			res_Fis_WR <- mean(res_Fis_WR_0)
+		}
 
-		if(length(nbrepeat) != 0){
+		if (length(nbrepeat) != 0){
 			Fis_sim <- NULL
 			FisWR_sim <- NULL
 			
@@ -3352,13 +3456,25 @@ if (length(unlist(list_genet)) != nrow(data1)){stop("MLL list does not compute")
 				pb <- txtProgressBar(min = 0, max = total, style = 3)
 			}
 			
-				for(s in 1:nbrepeat){
+				for (s in 1:nbrepeat){
 					tab_sim <- popsimgen(data1, haploid = FALSE)
-					Fis_sim <- c(Fis_sim, mean(Fis(tab_sim, RR = FALSE, genet = FALSE)[,4]))
-					FisWR_sim <- c(FisWR_sim, mean(Fis(tab_sim, RR = FALSE, genet = TRUE)[,4]))
-					if (bar){
-						setTxtProgressBar(pb, s)
-					}
+
+					Fis_sim_0 <- Fis(tab_sim, RR = FALSE, genet = FALSE)[,4]
+						if (sum(is.na(Fis_sim_0)) != 0){
+							Fis_sim <- c(Fis_sim, mean(Fis_sim_0[-which(is.na(Fis_sim_0))]))
+						} else {
+							Fis_sim <- c(Fis_sim, mean(Fis_sim_0))
+						}
+					FisWR_sim_0 <- Fis(tab_sim, RR = FALSE, genet = TRUE)[,4]
+						if (sum(is.na(FisWR_sim_0)) != 0){
+							FisWR_sim <- c(FisWR_sim, mean(FisWR_sim_0[-which(is.na(FisWR_sim_0))]))
+						} else {
+							FisWR_sim <- c(FisWR_sim, mean(FisWR_sim_0))
+						}
+
+						if (bar){
+							setTxtProgressBar(pb, s)
+						}
 				}
 				
 				if (bar){
@@ -3376,6 +3492,11 @@ if (length(unlist(list_genet)) != nrow(data1)){stop("MLL list does not compute")
 if (G != N){
 
 	Beta_P <- Pareto_index_core(data1, listMLL)[1]
+
+if (nocoords){
+	Sp_L <- pval_SpL <- Sp_L_WR <- pval_SpLWR <- Sp_R <- pval_SpR <-  
+		Sp_R_WR <- pval_SpRWR <- NA
+	} else {
 
 	res1 <- autocorrelation_core(data1, haploid, coords, listMLL, 
 	Loiselle = TRUE, Ritland = FALSE,
@@ -3413,6 +3534,7 @@ if (G != N){
 	Sp_R_WR <- res4$Slope_and_Sp_index[1,3]
 	pval_SpRWR <- res1$Slope_and_Sp_index[10,3]
 
+	}
 
 	R <- (G-1)/(N-1)
 	count_MLG <- unlist(lapply(list_genet, length))
@@ -3428,8 +3550,9 @@ if (G != N){
       
 } else {
 	L <- "no_clone"
-	R <- Beta_P <- Sp_L <- pval_SpL <- Sp_L_WR <- pval_SpLWR <- Sp_R <- pval_SpR <-  
+	Beta_P <- Sp_L <- pval_SpL <- Sp_L_WR <- pval_SpLWR <- Sp_R <- pval_SpR <-  
 		Sp_R_WR <- pval_SpRWR <- Hpp <- Jp <- Dp <- V <- Hill <- NA
+	R <- 1
 }
 
 	tab <- as.data.frame(matrix(c(N, L, G, nb_all, SE, res_Fis, pval_Fis, res_Fis_WR, 
@@ -3444,17 +3567,23 @@ tab
 }
 
 
-genclone <- function(data1, haploid = FALSE, coords = NULL, vecpop = NULL, listMLL = NULL, nbrepeat = NULL, bar = FALSE){
+GenClone <- function(data1, haploid = FALSE, coords = NULL, vecpop = NULL, listMLL = NULL, nbrepeat = NULL, bar = FALSE){
 
 	if (length(vecpop) != 0){			
-		if (length(vecpop) != nrow(data1)) {stop("vecpop length is not equal to the number of rows of your dataset.")}
+		if (length(vecpop) != nrow(data1)){
+			stop("Error: vecpop length is not equal to the number of rows of your dataset.")
+		}
 
 		vecpop_o <- vecpop
 		vecpop <- c(rep(1:length(unique(vecpop)), times = table(vecpop)[unique(vecpop)]))
 
 		datafreq <- freq_RR(data1, haploid, vecpop, genet = FALSE, RR = FALSE)
 		datatot <- split(data1, vecpop)
-		coordtot <- split(coords, vecpop)
+			if (length(coords) == 0){
+				coordtot <- NULL
+			} else {
+				coordtot <- split(coords, vecpop)
+			}
 		res <- as.data.frame(matrix(NA, ncol = 24, nrow = 1))
 		colnames(res) <- c("N", "Lineage", "nb_L", "nb_all", "SE", "Fis", "pval_2sides", "Fis_WR", 
 			"pval_2sides", "R", "Pareto_index", "Sp_Loiselle", "pval_2sides", "Sp_L_WR", 
@@ -3462,14 +3591,19 @@ genclone <- function(data1, haploid = FALSE, coords = NULL, vecpop = NULL, listM
 			"D", "V", "Hill")
 			for (p in 1:length(unique(vecpop))){
 				rownames(datatot[[p]]) <- 1:nrow(datatot[[p]])
-				rownames(coordtot[[p]]) <- 1:nrow(coordtot[[p]])
-				res <- rbind(res, genclone_core(datatot[[p]], datafreq[[p]], haploid, coordtot[[p]], listMLL[[p]], nbrepeat, bar))
+					if (length(coords) == 0){
+						coordtot <- NULL
+					} else {
+						rownames(coordtot[[p]]) <- 1:nrow(coordtot[[p]])
+					}
+				res <- rbind(res, GenClone_core(datatot[[p]], datafreq[[p]], haploid, coordtot[[p]], listMLL[[p]], nbrepeat, bar))
 			}
 		res <- res[-1,]
 		rownames(res) <- unique(vecpop_o)
 	} else {
 		datafreq <- freq_RR(data1, haploid, vecpop, genet = FALSE, RR = FALSE)
-		res <- genclone_core(data1, datafreq, haploid, coords, listMLL, nbrepeat, bar)
+		res <- GenClone_core(data1, datafreq, haploid, coords, listMLL, nbrepeat, bar)
 	}
+	res <- data.frame(lapply(res, as.character), stringsAsFactors=FALSE)
 	res
 }
