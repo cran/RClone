@@ -141,7 +141,9 @@ We used "3" because this is the length of the allele (with 3 numbers).
 For allele separation, we used "/" because, of course, it was the separator.  
 
 
+
 **3, You already work with Adegenet**  
+
 
 
 Similar to case number 2, except you have to export your `genind` data into table first:  

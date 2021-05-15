@@ -153,7 +153,10 @@ sort_all(zostera)
 ```
 
 
+
 **3, You already work with Adegenet**  
+
+
 
 Similar to case number 1, except you have to export your `genind` data into table first:  
 
